@@ -1,0 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Courgette&display=swap");
+
+.todoContainer {
+  width: 70%;
+  height: 90%;
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.todoContainer__quotes {
+  width: 50%;
+  border-radius: 10px;
+  min-width: 50%;
+  height: auto;
+  min-height: 15%;
+  cursor: pointer;
+  /* background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 10px; */
+  margin-top: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Courgette", cursive;
+  padding: 6px;
+}
+
+.todoContainer .todoContainer__quotes h1 {
+  text-align: center;
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
+  color: #fff;
+}
+
+.todoContainer .todoContainer__quotes h4 {
+  text-align: center;
+  color: wheat;
+}
