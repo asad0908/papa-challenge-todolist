@@ -2,18 +2,26 @@ import React, { useEffect, useState } from "react";
 import "../css/TodoApp.css";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
-import DoneAllIcon from "@material-ui/icons/DoneAll";
 import DeleteIcon from "@material-ui/icons/Delete";
 import uuid from "react-uuid";
+import moment from "moment";
 
 const TodoApp = () => {
   const [todo, setTodo] = useState("");
   const [todoValid, setTodoValid] = useState(false);
-  const [prevTodos, setPrevTodos] = useState(
-    localStorage.getItem("todos") !== null
-      ? JSON.parse(localStorage.getItem("todos"))
-      : []
-  );
+  const [todos, setTodos] = useState([]);
+  const [editing, setEditing] = useState(false);
+  const [editableIndex, setEditableIndex] = useState(null);
+
+  const saveTodos = (newTodos) => {
+    localStorage.setItem("todos", JSON.stringify(newTodos));
+  };
+
+  useEffect(() => {
+    if (localStorage.getItem("todos")) {
+      setTodos(JSON.parse(localStorage.getItem("todos")));
+    }
+  }, []);
 
   const handleTodoInput = (e) => {
     if (todo.length > 2) {
@@ -34,12 +42,20 @@ const TodoApp = () => {
         completed: false,
       };
 
-      const allTodos = [newTodo].concat(prevTodos);
-
-      setPrevTodos(allTodos);
-      localStorage.setItem("todos", JSON.stringify(allTodos));
-
-      setTodo("");
+      if (!editing) {
+        let newTodos = [newTodo, ...todos];
+        setTodos(newTodos);
+        setTodo("");
+        saveTodos(newTodos);
+      } else {
+        const editableTodo = todos;
+        editableTodo[editableIndex] = newTodo;
+        setTodos(editableTodo);
+        setTodo("");
+        saveTodos(editableTodo);
+        setEditableIndex(null);
+        setEditing(false);
+      }
     }
   };
 
@@ -50,18 +66,32 @@ const TodoApp = () => {
   };
 
   const deleteTodo = (key) => {
-    const prevArray = JSON.parse(localStorage.getItem("todos"));
-    const filteredArray = prevArray.filter((todo) => todo.key !== key);
-    setPrevTodos(filteredArray);
-    localStorage.setItem("todos", JSON.stringify(filteredArray));
+    let newTodos = todos.filter((todo) => todo.key !== key);
+    setTodos(newTodos);
+    saveTodos(newTodos);
+    setTodo("");
   };
 
-  const todoDone = (todos) => {
-    // const index = prevTodos.findIndex((todo) => todo.key === todos.key);
-    // const completedTodo = todos;
-    // completedTodo.completed = true;
-    // prevTodos[index] = completedTodo;
-    // localStorage.setItem("todos", JSON.stringify(prevTodos));
+  const editTodo = (todo) => {
+    setTodo(todo.todo);
+    const filteredIndex = todos.findIndex((tod) => tod.key === todo.key);
+    setEditing(true);
+    setEditableIndex(filteredIndex);
+  };
+
+  const completeTodo = (todo) => {
+    const filteredIndex = todos.findIndex((tod) => tod.key === todo.key);
+    const getAll = JSON.parse(localStorage.getItem("todos"));
+
+    if (todo.completed) {
+      //make todo undone
+      getAll[filteredIndex].completed = false;
+    } else {
+      //make todo done
+      getAll[filteredIndex].completed = true;
+    }
+    saveTodos(getAll);
+    setTodos(getAll);
   };
 
   return (
@@ -74,24 +104,32 @@ const TodoApp = () => {
           type="text"
           placeholder="Enter a todo"
         />
-        <AddIcon onClick={submitTodo} style={{ cursor: "pointer" }} />
+        {editing ? (
+          <EditIcon onClick={submitTodo} style={{ cursor: "pointer" }} />
+        ) : (
+          <AddIcon onClick={submitTodo} style={{ cursor: "pointer" }} />
+        )}
       </div>
       <div className="todoApp__todos">
-        {prevTodos.length !== 0 ? (
-          prevTodos.map((todos) => (
-            <div
-              onClick={() => todoDone(todos)}
-              key={todos.key}
-              className="todoApp__todo"
-            >
-              <div className="todoApp__todo--details">
-                <h1>{todos.todo}</h1>
-                <p>{todos.timestamp}</p>
+        {todos.length !== 0 ? (
+          todos.map((todo) => (
+            <div key={todo.key} className="todoApp__todo">
+              <div
+                onClick={() => completeTodo(todo)}
+                className={`todoApp__todo--details ${
+                  todo.completed ? "todo__completed" : ""
+                }`}
+              >
+                <h1>{todo.todo}</h1>
+                <p>{moment(todo.timestamp).fromNow()}</p>
               </div>
               <div className="todoApp__todo--controls">
-                <EditIcon style={{ fill: "darkblue", cursor: "pointer" }} />
+                <EditIcon
+                  onClick={() => editTodo(todo)}
+                  style={{ fill: "darkblue", cursor: "pointer" }}
+                />
                 <DeleteIcon
-                  onClick={() => deleteTodo(todos.key)}
+                  onClick={() => deleteTodo(todo.key)}
                   style={{ fill: "darkblue", cursor: "pointer" }}
                 />
               </div>
