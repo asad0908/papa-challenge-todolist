@@ -3,6 +3,7 @@ import "../css/TodoApp.css";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import DoneAllIcon from "@material-ui/icons/DoneAll";
 import uuid from "react-uuid";
 import moment from "moment";
 import FlipMove from "react-flip-move";
@@ -134,11 +135,14 @@ const TodoApp = () => {
                     onClick={() => deleteTodo(todo.key)}
                     style={{ fill: "darkblue", cursor: "pointer" }}
                   />
+                  {todo.completed && (
+                    <DoneAllIcon style={{ fill: "green", cursor: "pointer" }} />
+                  )}
                 </div>
               </div>
             ))
           ) : (
-            <h1>Add some todos & start hustling!</h1>
+            <h1 className="noTodo">Add some todos & start hustling!</h1>
           )}
         </FlipMove>
       </div>

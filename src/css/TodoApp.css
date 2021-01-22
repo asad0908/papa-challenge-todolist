@@ -92,3 +92,39 @@
   text-decoration: line-through;
   color: green !important;
 }
+
+.noTodo {
+  color: wheat;
+}
+
+@media only screen and (max-width: 768px) {
+  .todoApp__searchContainer {
+    width: 85%;
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 5px;
+  }
+  .todoApp__searchContainer input {
+    font-size: 1rem;
+  }
+  .todoApp__todos {
+    width: 95%;
+  }
+  .todoApp__todo {
+    width: 88%;
+  }
+  .todoApp__todo .todoApp__todo--details {
+    margin-left: 5px;
+  }
+
+  .todoApp__todo .todoApp__todo--details h1 {
+    font-size: 1.1rem;
+  }
+
+  .todoApp__todo .todoApp__todo--details p {
+    font-size: 0.7rem;
+  }
+  .todoApp__todo--controls {
+    justify-content: space-between;
+  }
+}

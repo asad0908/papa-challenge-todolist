@@ -6,14 +6,8 @@
   justify-content: center;
   align-items: center;
   font-family: "Acme", sans-serif;
-}
-
-.app video {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  min-width: 100%;
-  min-height: 100%;
-  z-index: -1;
+  background: url("https://steamuserimages-a.akamaihd.net/ugc/866241622021777365/9894657B47A0F44BFFB2673B7628C5CAF6CB35B4/?imw=637&imh=358&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true");
   background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 }
