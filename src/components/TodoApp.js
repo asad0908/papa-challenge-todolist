@@ -5,6 +5,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import uuid from "react-uuid";
 import moment from "moment";
+import FlipMove from "react-flip-move";
 
 const TodoApp = () => {
   const [todo, setTodo] = useState("");
@@ -111,33 +112,35 @@ const TodoApp = () => {
         )}
       </div>
       <div className="todoApp__todos">
-        {todos.length !== 0 ? (
-          todos.map((todo) => (
-            <div key={todo.key} className="todoApp__todo">
-              <div
-                onClick={() => completeTodo(todo)}
-                className={`todoApp__todo--details ${
-                  todo.completed ? "todo__completed" : ""
-                }`}
-              >
-                <h1>{todo.todo}</h1>
-                <p>{moment(todo.timestamp).fromNow()}</p>
+        <FlipMove typeName={null}>
+          {todos.length !== 0 ? (
+            todos.map((todo) => (
+              <div key={todo.key} className="todoApp__todo">
+                <div
+                  onClick={() => completeTodo(todo)}
+                  className={`todoApp__todo--details ${
+                    todo.completed ? "todo__completed" : ""
+                  }`}
+                >
+                  <h1>{todo.todo}</h1>
+                  <p>{moment(todo.timestamp).fromNow()}</p>
+                </div>
+                <div className="todoApp__todo--controls">
+                  <EditIcon
+                    onClick={() => editTodo(todo)}
+                    style={{ fill: "darkblue", cursor: "pointer" }}
+                  />
+                  <DeleteIcon
+                    onClick={() => deleteTodo(todo.key)}
+                    style={{ fill: "darkblue", cursor: "pointer" }}
+                  />
+                </div>
               </div>
-              <div className="todoApp__todo--controls">
-                <EditIcon
-                  onClick={() => editTodo(todo)}
-                  style={{ fill: "darkblue", cursor: "pointer" }}
-                />
-                <DeleteIcon
-                  onClick={() => deleteTodo(todo.key)}
-                  style={{ fill: "darkblue", cursor: "pointer" }}
-                />
-              </div>
-            </div>
-          ))
-        ) : (
-          <h1>Add some todos & start hustling!</h1>
-        )}
+            ))
+          ) : (
+            <h1>Add some todos & start hustling!</h1>
+          )}
+        </FlipMove>
       </div>
     </div>
   );
