@@ -35,6 +35,7 @@ const TodoApp = () => {
   };
 
   const submitTodo = () => {
+    console.log(todoValid);
     if (todoValid) {
       const date = new Date();
       const newTodo = {
@@ -59,6 +60,7 @@ const TodoApp = () => {
         setEditing(false);
       }
     }
+    setTodoValid(false);
   };
 
   const handleEnter = (e) => {
