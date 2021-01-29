@@ -7,7 +7,7 @@ const TodoContainer = () => {
   const [selectedQuote, setSelectedQuote] = useState(null);
   useEffect(() => {
     const fetchQuotes = async () => {
-      const response = await fetch("https://type.fit/api/quotes")
+      await fetch("https://type.fit/api/quotes")
         .then((res) => res.json())
         .then((data) => {
           setQuotes(data);

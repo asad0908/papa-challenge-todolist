@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import "../css/TodoApp.css";
 import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
-import DoneAllIcon from "@material-ui/icons/DoneAll";
+
 import uuid from "react-uuid";
-import moment from "moment";
 import FlipMove from "react-flip-move";
+import Todo from "./Todo";
 
 const TodoApp = () => {
   const [todo, setTodo] = useState("");
@@ -35,7 +34,6 @@ const TodoApp = () => {
   };
 
   const submitTodo = () => {
-    console.log(todoValid);
     if (todoValid) {
       const date = new Date();
       const newTodo = {
@@ -59,6 +57,8 @@ const TodoApp = () => {
         setEditableIndex(null);
         setEditing(false);
       }
+    } else {
+      alert("Todo must be greater than 3 letters!");
     }
     setTodoValid(false);
   };
@@ -118,30 +118,13 @@ const TodoApp = () => {
         <FlipMove typeName={null}>
           {todos.length !== 0 ? (
             todos.map((todo) => (
-              <div key={todo.key} className="todoApp__todo">
-                <div
-                  onClick={() => completeTodo(todo)}
-                  className={`todoApp__todo--details ${
-                    todo.completed ? "todo__completed" : ""
-                  }`}
-                >
-                  <h1>{todo.todo}</h1>
-                  <p>{moment(todo.timestamp).fromNow()}</p>
-                </div>
-                <div className="todoApp__todo--controls">
-                  <EditIcon
-                    onClick={() => editTodo(todo)}
-                    style={{ fill: "darkblue", cursor: "pointer" }}
-                  />
-                  <DeleteIcon
-                    onClick={() => deleteTodo(todo.key)}
-                    style={{ fill: "darkblue", cursor: "pointer" }}
-                  />
-                  {todo.completed && (
-                    <DoneAllIcon style={{ fill: "green", cursor: "pointer" }} />
-                  )}
-                </div>
-              </div>
+              <Todo
+                key={todo.key}
+                todo={todo}
+                completeTodo={completeTodo}
+                editTodo={editTodo}
+                deleteTodo={deleteTodo}
+              />
             ))
           ) : (
             <h1 className="noTodo">Add some todos & start hustling!</h1>
